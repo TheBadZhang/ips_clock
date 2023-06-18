@@ -33,7 +33,7 @@ httpsrv.start(80, function(client, method, uri, headers, body)
 	end
 	-- 返回值的约定 code, headers, body
 	-- 若没有返回值, 则默认 404, {} ,""
-	return 404, {}, "Not Found" .. uri
+	return 404, {}, "Not Found " .. uri
 end)
 end
 -- 关于静态文件
