@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+	<title>智能时钟</title>
+
+	<!-- Bootstrap -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+	<style data-merge-styles="true"></style>
+	<!-- HTML5 shim 和 Respond.js 是为了让 IE8 支持 HTML5 元素和媒体查询（media queries）功能 -->
+	<!-- 警告：通过 file:// 协议（就是直接将 html 页面拖拽到浏览器中）访问页面时 Respond.js 不起作用 -->
+	<!--[if lt IE 9]>
+	<script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+	<![endif]-->
+</head>
+<body>
+	<nav class="navbar navbar-default">
+		<div class="container">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+			<span class="sr-only">Toggle navigation</span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			</button>
+			<a class="navbar-brand" href="#">智能时钟</a>
+		</div>
+		<div class="navbar-collapse collapse">
+			<ul class="nav navbar-nav">
+			<li class="active"><a href="#">控制</a></li>
+			<li><a href="#">设置</a></li>
+			<li><a href="#">关于</a></li>
+			</ul>
+		</div><!--/.nav-collapse -->
+		</div>
+	</nav>
+
+		<div class="container">
+	<h1>你好，世界！</h1>
+	<div class="alert alert-success" role="alert">
+		<span class="label label-success" style="font-size:1.5em">恭喜!</span>你看到这个网站表示这个芯片正常运行！
+	</div>
+
+	<h1><span id="light" class="label label-success">灯状态</span></h1>
+	<div class="panel panel-info">
+		<div class="panel-heading">
+		<h3 class="panel-title">
+			<span class="label label-info">控制选项</span>
+		</h3>
+		</div>
+		<div class="panel-body">
+			<button type="button" class="btn btn-lg btn-danger" onclick="http_get('/led/0')">关闭背光</button>
+			<button type="button" class="btn btn-lg btn-success" onclick="http_get('/led/1')">打开背光</button>
+			<button type="button" class="btn btn-lg btn-warning" onclick="http_get('/led/toggle')">改变背光</button>
+		</div>
+	</div>
+	<br>
+	<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+		<li class="active"><a href="#">Action</a></li>
+		<li><a href="#">Another action</a></li>
+		<li><a href="#">Something else here</a></li>
+		<li role="separator" class="divider"></li>
+		<li><a href="#">Separated link</a></li>
+	  </ul>
+	<img class="img-thumbnail" src="./0.jpg" alt="0">
+	<img class="img-thumbnail" src="./1.jpg" alt="1">
+	<img class="img-thumbnail" src="./2.jpg" alt="2">
+	<img class="img-thumbnail" src="./3.jpg" alt="3">
+	<img class="img-thumbnail" src="./4.jpg" alt="4">
+	<img class="img-thumbnail" src="./5.jpg" alt="5">
+	<img class="img-thumbnail" src="./6.jpg" alt="6">
+	<img class="img-thumbnail" src="./7.jpg" alt="7">
+	<img class="img-thumbnail" src="./8.jpg" alt="8">
+	<img class="img-thumbnail" src="./9.jpg" alt="9">
+
+	</div>
+	<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+	<script src="https://cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+	<!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd" crossorigin="anonymous"></script>
+
+	<script>
+		http_get = (url, type="", callback=(request)=>{
+			console.log(request.responseText)
+			http_get("/state", "json", (request)=>{
+				light_obj = document.getElementById("light");
+				if (request.readyState === XMLHttpRequest.DONE) {
+					if (request.status === 200) {
+						var response = request.response
+						if (response["state"] == 1) {
+							light_obj.className = "label label-success"
+						} else {
+							light_obj.className = "label label-danger"
+						}
+						console.log(response);
+					}
+				}
+			})
+		}) => {
+			const Http = new XMLHttpRequest();
+			domain = "https://esp32c3.tbz.io"
+			uri = domain + url
+			Http.open("GET", uri);
+			Http.responseType = type;
+			Http.send();
+			Http.onload = ()=>{
+				callback(Http)
+			}
+		}
+		http_get("/state")
+	</script>
+</body>
+</html>
+
+
+
