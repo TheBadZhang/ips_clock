@@ -5,7 +5,6 @@ VERSION = "1.0.0"
 _G.sys = require("sys")
 
 _G.my_http_srv = require("http_srv")
-_G.fs = require("fs")
 if wdt then
 	wdt.init(9000)
 	sys.timerLoopStart(wdt.feed, 3000)
