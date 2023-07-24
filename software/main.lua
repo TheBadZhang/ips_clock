@@ -26,7 +26,7 @@ time2screen = {
 	{4,2},
 	{5,4},
 	{9,5},
-	{0,6},
+	{0,7},
 	{1,8}
 }
 -- 初始化片选引脚，并设置初始电平为低电平（初始化用）
@@ -102,7 +102,7 @@ sys.taskInit(
 					gpio.set(t[1],1)
 				end
 			end
-			sys.wait(1000)
+			timer.mdelay(100)
 		end
 	end
 )
